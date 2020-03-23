@@ -1,8 +1,108 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+   html,body{
+    background-image: url('https://i.pinimg.com/originals/33/f6/62/33f6622393da167c87a4151d8d99225b.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    font-family: 'Numans', sans-serif;
+    }
+    
+    .container{
+    height: 100%;
+    align-content: center;
+    }
+    
+    .card{
+    padding: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    background-color: rgba(0,0,0,0.5) !important;
+    }
+    .card-discussion{
+      padding: auto;
+      margin-top: auto;
+      margin-bottom: auto;
+      background-color: rgba(0,0,0,0.5) !important;
+      }
+    .card-discussion-body{
+      height: 300px;
+      overflow-y:scroll;
+    }
+
+    .card-discussion-body div{
+      color : blue;
+      background-color:white;
+      font-size:20px;
+      margin-top:10px;
+      margin-left: 30px;
+      margin-right: 30px;
+      border-radius:20px;
+      padding:5px;
+      word-wrap: break-word;
+      white-space: pre-line;
+      text-align: left;
+    }
+
+    .card-header h3{
+    color: white;
+    }
+    
+    .card-header h4{
+      color: white;
+      text-align: center;
+    }
+    .card.body audio{
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+      
+    .input-group-prepend span{
+    width: 50px;
+    background-color: #FFC312;
+    color: black;
+    border:0 !important;
+    }
+    
+    input:focus{
+    outline: 0 0 0 0  !important;
+    box-shadow: 0 0 0 0 !important;
+    
+    }
+    
+    
+    .login_btn{
+    color: black;
+    background-color: #FFC312;
+    width: 100px;
+    }
+    
+    .login_btn:hover{
+    color: black;
+    background-color: white;
+    }
+
+
+
+.main-container{
+      margin-top: auto;
+      margin-bottom: auto;
+      margin-left: 2%;
+      margin-right: 2%;
+  }
+.main-container form{
+    padding: auto;
 }
 
-a {
-  color: #00B7FF;
+
+  .game-card{
+      padding: auto;
+      background: #fff;
+      box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+  }
+.game-card canvas{
+  padding: auto;
 }
+
+
+
+  
