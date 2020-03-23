@@ -1,0 +1,18 @@
+extends layout
+
+block content
+ .container
+  .d-flex.justify-content-center.h-100
+    .card
+      .card-header
+        h3 Sign In
+      .card-body
+        form(action='/index', method='POST')
+          .input-group.form-group
+            .input-group-prepend
+              span.input-group-text
+                i.fas.fa-user
+            input#userName.form-control(type='text',name='userName', placeholder='username')
+          .form-group
+            input#start.btn.float-right.login_btn(type='submit', value='Login')
+ script(src='/javascripts/users.js')

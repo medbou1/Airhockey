@@ -1,5 +1,35 @@
+
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+ .main-container
+  .row
+    .col-md-3
+     .card-discussion
+      .card-header
+        h3 Discussion 
+      .card-discussion-body#Discussion
+      form#chatForm.input-group.form-group
+       input#msg.form-control(type='text', placeholder='write your message ')
+       input#send.btn.float-right.login_btn(type='submit',value='send')
+
+    .col-md-6
+      .card
+       .card-header
+         h4#score Welcome #{userName} 
+       .card.body
+        canvas#game(height='650px',width='650px')
+        div(style='position:absolute; top:220px; left:300px;font-size:100px;color:white;')
+         i#waiting.fa.fa-spinner.w3-spin
+        img#playAgain(src='/images/playagain.png',style='position:absolute;top:350px; left:100px;font-size:20px;display:none')
+    
+    .col-md-3
+     .card
+      .card-header
+        h3 Music 
+      .card.body
+       audio(controls='controls')
+        source(src='/audio/test.mp3', type='audio/mp3')
+ script(src='https://cdn.socket.io/socket.io-1.4.5.js')
+ script(src='/javascripts/index.js')
+
