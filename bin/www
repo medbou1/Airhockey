@@ -1,12 +1,21 @@
 #!/usr/bin/env node
 
+
+
+
+
+var game_is_off=true;
+
+
 /**
  * Module dependencies.
  */
 
 var app = require('../app');
-var debug = require('debug')('airhockey:server');
+var debug = require('debug')('webapp:server');
 var http = require('http');
+var Players=require('./players');
+var Bullet=require('./bullet');
 
 /**
  * Get port from environment and store in Express.
@@ -88,3 +97,98 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+
+/**
+ * Socket handler 
+ */
+var io=require('socket.io')(server);
+var players=new Players();
+var number_of_player=0;
+var socketList=[];
+
+var chat=io
+.of('/chat')
+.on('connection',function(socket){
+  socket.on('msg',function(data){
+    chat.emit('msg',data);
+  })
+});
+
+
+var game=io
+.of('/play')
+.on('connection',function(socket){
+    if(socketList[0]==undefined || number_of_player==0)
+    {socket.id=0;
+      socketList[socket.id]=socket;
+      number_of_player++;}
+    else{
+      socket.id=1;
+      socketList[socket.id]=socket;
+      number_of_player++;
+      game_is_off=false;
+    }
+    if(socket.id == 0)
+    {	players.onConnect(socket,13,320);}
+    else if(socket.id == 1)
+    {players.onConnect(socket,637,320);}
+    socket.on('getName',function(data){
+      players.playerList[socket.id].playerName=data;
+    });
+    socket.on('disconnect',function(){
+      console.log("card-discussion-body");
+      delete socketList[socket.id];
+      number_of_player--;
+    });
+});
+
+
+var bulletPlay = new Bullet(Math.random()*360,300,325,players.playerList);
+function stopGame(){
+	if(number_of_player ==1 && !game_is_off){	
+		for(var i in socketList){
+			(socketList[i]).emit('endGame',{score:3,winner:players.playerList[i].playerName});			 
+			}
+      players.playerList[0].score=0;
+      players.playerList[1].score=0;
+      game_is_off=true;
+	}
+}
+
+
+setInterval(function(){
+  if(players.playerList[0]!=undefined && players.playerList[1]!=undefined)
+  {if(players.playerList[0].score==3 ){
+		game.emit('endGame',{score:players.playerList[0],winner:players.playerList[0].playerName});
+    game_is_off=true;		
+		players.playerList[0].score=0;
+		players.playerList[1].score=0;
+	}
+	else if(players.playerList[1].score==3){
+    game.emit('endGame',{score:players.playerList[1],winner:players.playerList[1].playerName});
+    game_is_off=true;
+		players.playerList[0].score=0;
+		players.playerList[1].score=0;
+  }
+  else if (number_of_player ==0){
+		players.playerList[0].score=0;
+		players.playerList[1].score=0;
+		game_is_off=true;	
+  }
+  else if (number_of_player ==1 && !game_is_off){
+		setTimeout(stopGame,5000);
+		
+	}}
+	if (number_of_player>=2 && game_is_off==false){	
+		var pack = {
+			player:players.update(),
+			bullet:bulletPlay.update(),
+		}
+		for(var i in socketList){
+			var socket = socketList[i];
+			socket.emit('updatePosition',pack);
+		}
+	}
+},1000/25);
