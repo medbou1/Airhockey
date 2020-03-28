@@ -1,15 +1,13 @@
-var userName=document.getElementById("userName");
-var login=document.getElementById("start");
-login.disabled = true;
-userName.oninput=function(){
-    login.disabled =false;
+var playerName=document.getElementById("playerName");
+var start=document.getElementById("start");
+start.disabled = true;
+playerName.oninput=function(){
+    start.disabled =false;
 }
-login.onclick= function(){
-    if (typeof(sessionStorage) !== "undefined") {  				
-            sessionStorage.setItem('userName', userName.value);			           
-            //window.location.replace("http://localhost:3000"); 			
-    } 
+start.onclick= function(){
+    if (typeof(sessionStorage) !== "undefined") 
+    { sessionStorage.setItem('userName', playerName.value);} 
     else  
-          window.alert("Sorry, your browser does not support Web Storage...");	
+        window.alert("Error, your browser does not support Web Storage...");	
     
 };
