@@ -28,8 +28,11 @@ block content
       .card-header
         h3 Music 
       .card.body
-       audio(controls='controls')
-        source(src='/audio/test.mp3', type='audio/mp3')
+       #trackbox
+
+      //-  audio(controls='controls')
+      //-   source(src='/audio/test.mp3', type='audio/mp3')
  script(src='https://cdn.socket.io/socket.io-1.4.5.js')
  script(src='/javascripts/index.js')
+ script(src="/javascripts/audioPlayer.js")
 
