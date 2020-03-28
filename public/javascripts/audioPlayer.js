@@ -22,9 +22,9 @@ function audioApp(){
 	var playingtrack;
 	var trackbox = _("trackbox");
 	var tracks = {
-	    "track1":["bass", "bass"],
-		"track2":["sax", "sax"],
-		"track3":["piano", "piano"]//ajouter les fichiers audio apres ajout dans le dossier audio
+	    "track1":["Bass", "bass"],
+		"track2":["Sax", "sax"],
+		"track3":["Piano", "piano"]//ajouter les fichiers audio apres ajout dans le dossier audio
 	};
 	for(var track in tracks){
 		var tb = document.createElement("div");
