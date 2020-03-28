@@ -1,4 +1,4 @@
-var playerName=document.getElementById("playerName");
+var playerName=document.getElementById("userName");
 var start=document.getElementById("start");
 start.disabled = true;
 playerName.oninput=function(){
