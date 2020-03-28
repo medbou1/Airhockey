@@ -12,7 +12,7 @@ var game_is_off=true;
  */
 
 var app = require('../app');
-var debug = require('debug')('webapp:server');
+var debug = require('debug')('airhockey:server');
 var http = require('http');
 var Players=require('./players');
 var Bullet=require('./bullet');
