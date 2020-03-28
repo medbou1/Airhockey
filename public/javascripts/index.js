@@ -1,3 +1,11 @@
+
+	var ak_playbtn = new Image();
+	ak_playbtn.src = '/images/ak_playbtn.png';
+	var ak_pausebtn = new Image();
+	ak_pausebtn.src = '/images/ak_pausebtn.png';
+
+
+
 var waitingIcon = document.getElementById("waiting");
 var canvas = document.getElementById("game");
 var ctx = canvas.getContext("2d");
