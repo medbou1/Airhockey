@@ -1,6 +1,8 @@
 # Airhockey
 ECL - Application web
 
+![Image de jeu](https://github.com/medbou1/Airhockey/blob/master/public/images/game.png)
+
 Etapes:
 
 1- Télécharger et extraire le fichier .zip
