@@ -1,12 +1,5 @@
 #!/usr/bin/env node
 
-
-
-
-
-var game_is_off=true;
-
-
 /**
  * Module dependencies.
  */
@@ -104,10 +97,13 @@ function onListening() {
  * Socket handler 
  */
 var io=require('socket.io')(server);
+/**List of players */
 var players=new Players();
 var number_of_player=0;
 var socketList=[];
+var game_is_off=true;
 
+/**Handle chat socket */
 var chat=io
 .of('/chat')
 .on('connection',function(socket){
@@ -116,14 +112,16 @@ var chat=io
   })
 });
 
-
+/**Handle play socket */
 var game=io
 .of('/play')
 .on('connection',function(socket){
+  /**first player connecting... */
     if(socketList[0]==undefined || number_of_player==0)
     {socket.id=0;
       socketList[socket.id]=socket;
       number_of_player++;}
+    /**second player connecting... */
     else{
       socket.id=1;
       socketList[socket.id]=socket;
@@ -134,9 +132,11 @@ var game=io
     {	players.onConnect(socket,13,320);}
     else if(socket.id == 1)
     {players.onConnect(socket,637,320);}
+    /**Get name of each playes */
     socket.on('getName',function(data){
       players.playerList[socket.id].playerName=data;
     });
+    /**Player disconnect the game */
     socket.on('disconnect',function(){
       console.log("card-discussion-body");
       delete socketList[socket.id];
@@ -144,28 +144,21 @@ var game=io
     });
 });
 
-
+/**Create the Bullet object */
 var bulletPlay = new Bullet(Math.random()*360,300,325,players.playerList);
-function stopGame(){
-	if(number_of_player ==1 && !game_is_off){	
-		for(var i in socketList){
-			(socketList[i]).emit('endGame',{score:3,winner:players.playerList[i].playerName});			 
-			}
-      players.playerList[0].score=0;
-      players.playerList[1].score=0;
-      game_is_off=true;
-	}
-}
 
-
+/* Update function called each 40ms*/
 setInterval(function(){
+  /**Handle end of game cases */
   if(players.playerList[0]!=undefined && players.playerList[1]!=undefined)
+  /**Player 1 win */
   {if(players.playerList[0].score==3 ){
 		game.emit('endGame',{score:players.playerList[0],winner:players.playerList[0].playerName});
     game_is_off=true;		
 		players.playerList[0].score=0;
 		players.playerList[1].score=0;
-	}
+  }
+  /**Player 2 win */
 	else if(players.playerList[1].score==3){
     game.emit('endGame',{score:players.playerList[1],winner:players.playerList[1].playerName});
     game_is_off=true;
@@ -177,10 +170,19 @@ setInterval(function(){
 		players.playerList[1].score=0;
 		game_is_off=true;	
   }
+  /**One of the two playes exit the game */
   else if (number_of_player ==1 && !game_is_off){
-		setTimeout(stopGame,5000);
+		setTimeout(function(){
+      for(var i in socketList){
+        (socketList[i]).emit('endGame',{score:3,winner:players.playerList[i].playerName});			 
+        }
+        players.playerList[0].score=0;
+        players.playerList[1].score=0;
+        game_is_off=true;
+    },5000);
 		
-	}}
+  }}
+  /**Update postion and speed of playes and bullet each 40ms*/
 	if (number_of_player>=2 && game_is_off==false){	
 		var pack = {
 			player:players.update(),

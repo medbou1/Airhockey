@@ -29,6 +29,7 @@ class player extends object{
 	getScore(){
 		return this.score;
 	}
+	/**method to update speed of player with movement keys pressed */
 	updateSpd(maxSpd,width,height){//maxSpd modifiable
 		let spdX=0;
 		let spdY=0;
@@ -49,6 +50,7 @@ class player extends object{
 			spdY = 0;
 		return [spdX,spdY];
 	}
+	/**method to update postion and speed of player */
 	update(){
 		let aux=this.updateSpd(8,26,120);
        super.updatePosition(aux[0],aux[1]);
@@ -57,6 +59,7 @@ class player extends object{
 
 class Players{
 	constructor() {
+		/**List of players */
 		this.playerList=[];
 	}
 	addPlayer(id,X,Y){
@@ -64,8 +67,10 @@ class Players{
 		this.playerList[id]=aux;
 		return aux;
 	}
+	/**When new player connect */
 	onConnect(socket,X,Y){
 		let player=this.addPlayer(socket.id,X,Y);
+		/**play socket list when a movement key is pressed */
 		socket.on('keyPress',function(data){
 			if(data.inputId === 'left')
 				player.pressingLeft = data.state;
@@ -79,9 +84,11 @@ class Players{
 		});
 
 	}
+	/**When a player disconnet */
 	onDisconnect(socket){
       delete this.playerList[socket.id];
 	}
+	/**method to update postion of each palyer in the list */
 	update(){
 		for(let i in this.playerList){
 			this.playerList[i].update();

@@ -6,8 +6,8 @@
 
 
 
-var waitingIcon = document.getElementById("waiting");
-var canvas = document.getElementById("game");
+var waitingIcon = document.getElementById("waiting"); // Waiting icon
+var canvas = document.getElementById("game"); 
 var ctx = canvas.getContext("2d");
 var img = new Image();
 img.src = '/images/stade.jpg';
@@ -17,22 +17,25 @@ var winner=new Image();
 winner.src='/images/winner.png';
 var loser= new Image();
 loser.src='/images/loser.png';
+/**When paleyr click playAgain, restart the game */
 var playAgain=document.getElementById("playAgain");
 playAgain.addEventListener('click',()=>{document.location.replace("http://localhost:3000");});
 ctx.clearRect(0,0,canvas.width,canvas.height);
 ctx.drawImage (img,0, 0,canvas.width,canvas.height);
 
 
-//chat
+/**handle the chat sokcet */
 var chat=io('http://localhost:3000/chat');
 var messege=document.getElementById("msg");
 var chatForm=document.getElementById("chatForm");
 var discussion=document.getElementById("Discussion");
+/**Emit the player name and message to the server  */
 chatForm.onsubmit=function(event){
   event.preventDefault();
   chat.emit('msg',{player:sessionStorage.getItem('userName'),msg:messege.value});
   messege.value='';
   return false;};
+/**list to message come from the server  */
 chat.on('msg',function(data){
   var node = document.createElement("div");     
   if(data.player==sessionStorage.getItem("userName"))           
@@ -49,15 +52,19 @@ chat.on('msg',function(data){
 var play=io('http://localhost:3000/play');
 play.emit('getName',sessionStorage.getItem('userName'));
 play.on('updatePosition', function(data){
+  /**game starting, disable the waiting icon... */
   waitingIcon.style.display="none";
   ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.drawImage(img, 0, 0,canvas.width,canvas.height);
+  /**Display players */
   for(var i =0; i<data.player.length;i++){
     ctx.fillStyle= "blue";
    ctx.fillRect(data.player[i].x-(data.player[i].width/2),data.player[i].y-(data.player[i].height/2),data.player[i].width,data.player[i].height);
+   /**Display scores*/
    if(data.player[i].id ==0){var text1=data.player[i].playerName+': '+data.player[i].score;}
   else {var text2=data.player[i].playerName+': '+data.player[i].score;}}
   (document.getElementById("score")).textContent=text1+' | '+text2;
+  /**Display the bullet */
   ctx.beginPath();
   ctx.drawImage(ballImage,data.bullet.x,data.bullet.y,data.bullet.r,data.bullet.r);
 });

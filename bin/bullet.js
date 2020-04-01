@@ -32,6 +32,7 @@ class Bullet extends object{
 
 	 this.r = 38;
 	}
+	/**When the bullet touch one of the playes */
 	player_bullet_collision(number_player){
 		
 		let left = this.x ,
@@ -46,7 +47,7 @@ class Bullet extends object{
 		
                     
 
-		
+		/**If collision with the first player */
 		if (number_player==0 && top>ptop && bottom<pbottom && right>pleft && this.x+this.r/2<pleft)
                     {
                         this.spdX -= 1;
@@ -79,7 +80,8 @@ class Bullet extends object{
 					this.spdX += 1;
 			 	}
 			}
-                    }
+		}
+		/**If collision with the scond player */
 		else if (number_player==1 && top>ptop && bottom<pbottom && left<pright && this.x+this.r/2>pright)
                     {
                         this.spdX += 1;
@@ -124,18 +126,17 @@ class Bullet extends object{
 		else if(this.spdY< -20)
 			this.spdY = -20;		    
 	   }
-
+	/**Update the Bullet postion, speed and if there is a collision each 40ms */
 	update(){
-		/*les équations de la positon de la balle*/
 	 if(this.y + this.r>650 && this.spdY>0){
 		 this.spdY *= -1;
 		 
 	 }
-	 else if(this.y /*- this.r*/<0 && this.spdY<0){
+	 else if(this.y <0 && this.spdY<0){
 		 this.spdY *= -1;
 		 
 	 }
-	 
+	 /** When a Player lose, rest bullet postion and update players score */
 	 if(this.x + this.r>1000){
 		 if(Math.random()<=0.5)
 			 this.spdX = -3;
@@ -164,11 +165,13 @@ class Bullet extends object{
 		 this.playerList[1].score++;
 		 
 	 }
+	 /**When collision between player and bullet call player_bullet_collision method */
 	 else  {
 		 for(let i in this.playerList){			
 			 this.player_bullet_collision(this.playerList[i].id);
 		 }	 
 	 }
+	 /**Update the bullet postion */
 	 super.updatePosition(this.spdX,this.spdY);
 	 return {x:this.x,y:this.y,r:this.r};
  }
